@@ -1,0 +1,121 @@
+﻿@model Entidades.Persona
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Crear</h1><br />
+
+<h4>Datos De La Persona</h4>
+<hr />
+
+
+<form asp-action="Create" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <!-- FILA #1 -->
+    <div class="row">
+
+        <div class="form-group col-md-4">
+            <label class="control-label">Nombres:</label>
+            <input asp-for="Nombres" class="form-control" />
+            <span asp-validation-for="Nombres" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label class="control-label">Apellidos:</label>
+            <input asp-for="Apellidos" class="form-control" />
+            <span asp-validation-for="Apellidos" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label  class="control-label">Ciudad Residencia:</label>
+            <select name="IdCiudadEnPersona" class="form-control" asp-items="ViewBag.Lista_Ciudades"></select>
+        </div>
+
+    </div>
+
+
+    <!-- FILA #2-->
+    <div class="row">
+
+        <div class="form-group col-md-5">
+            <label class="control-label">Correo Electronico:</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-3">
+            <label class="control-label">Password:</label>
+            <input asp-for="Contraseña" class="form-control" />
+            <span asp-validation-for="Contraseña" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-3">
+            <label class="control-label">Confirmar Password:</label>
+            <input asp-for="ConfirmarContraseña" class="form-control" />
+            <span asp-validation-for="ConfirmarContraseña" class="text-danger"></span>
+        </div>
+
+    </div>
+
+
+    <!-- FILA #3 IMAGEN -->
+    <div class="row">
+
+        <div class="form-group col-md-5">
+            <label class="control-label">Fotografia:</label>
+            <input type="file" id="ImagenPersona" asp-for="Fotografia" class="form-control" onchange="MostrarImagenPersona()" accept="image/*" />           
+        </div>
+            <div>
+                <img id="VistaImagenPersona" src="~/img/defecto.jpg" style="max-height:150px; max-width:150px" />
+            </div>
+
+
+    </div>
+
+
+    <!-- BOTONES -->
+    <div class="row">
+
+        <div class="form-group col-md-12">
+            <input type="submit" value="GUARDAR" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">CANCELAR</a>
+        </div>
+
+    </div>
+
+
+</form>
+
+
+
+@section Scripts 
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Vista Previa De Imagen -->
+    <script>
+
+        function MostrarImagenPersona() {
+            var Imagen_Obtenida = document.getElementById('ImagenPersona');
+
+            if (Imagen_Obtenida.files && Imagen_Obtenida.files[0]) {
+                // Lector De Archivos:
+                var Lector = new FileReader();
+
+                // Guardamos la imagen en un evento
+                Lector.onload = function (e) {
+                    document.getElementById('VistaImagenPersona').src = e.target.result;
+                }
+
+                //Convertimos el archivo en Base64:
+                Lector.readAsDataURL(Imagen_Obtenida.files[0]);
+            }
+        }
+
+    </script>
+
+}
